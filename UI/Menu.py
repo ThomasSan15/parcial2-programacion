@@ -6,11 +6,13 @@ from datetime import date
 
 class Menu:
     def __init__(self):
+        
         self._clientes = CRUDCliente()
         self._productos = CRUDProducto()
         self._facturas = CRUDFactura()
 
     def mostrar_menu(self):
+    
         while True:
             print("\n=== SISTEMA DE FACTURACIÓN AGRÍCOLA ===")
             print("1. Registrar cliente")
@@ -41,6 +43,7 @@ class Menu:
                 print("Opción no válida.")
 
     def _op_registrar_cliente(self):
+        # Captura datos y crea un cliente
         nombre = input("Nombre: ").strip()
         cedula = input("Cédula: ").strip()
         try:
@@ -50,14 +53,18 @@ class Menu:
             print("Error:", e)
 
     def _op_registrar_producto(self):
+        
         print("\nTipo de producto:")
         print("1. Antibiótico")
         print("2. Fertilizante")
         print("3. Control de plagas")
+
         tipo = input("Seleccione: ").strip()
         nombre = input("Nombre: ").strip()
         valor = float(input("Valor: ").strip())
+
         if tipo == "1":
+            # Registro de antibiótico
             dosis = float(input("Dosis (400-600): ").strip())
             animal = input("Tipo de animal (Bovino/Porcino/Caprino): ").strip()
             try:
@@ -65,7 +72,9 @@ class Menu:
                 print("Antibiótico creado:", p)
             except Exception as e:
                 print("Error:", e)
+
         elif tipo == "2":
+            # Registro de fertilizante
             registro = input("Registro ICA: ").strip()
             frecuencia = input("Frecuencia de aplicación: ").strip()
             fecha_txt = input("Fecha última aplicación (YYYY-MM-DD): ").strip()
@@ -76,7 +85,9 @@ class Menu:
                 print("Fertilizante creado:", p)
             except Exception as e:
                 print("Error:", e)
+
         elif tipo == "3":
+            # Registro de control de plagas
             registro = input("Registro ICA: ").strip()
             frecuencia = input("Frecuencia de aplicación: ").strip()
             periodo = input("Periodo de carencia: ").strip()
@@ -89,50 +100,67 @@ class Menu:
             print("Tipo no válido.")
 
     def _op_crear_factura(self):
+     
         cedula = input("Cédula del cliente: ").strip()
         cliente = self._clientes.BuscarPorCedula(int(cedula))
+
         if cliente is None:
             print("Cliente no encontrado.")
             return
+
         print("Seleccione productos por número (separados por coma):")
         prods = self._productos.ListarProductos()
+
         if not prods:
             print("No hay productos registrados.")
             return
+
         for i, p in enumerate(prods, start=1):
             print(f"{i}. {p}")
+
         indices_txt = input("Indices: ").strip()
+
         try:
             indices = [int(x)-1 for x in indices_txt.split(",") if x.strip()]
             seleccion = [prods[i] for i in indices]
+
+            # Crea la factura con los productos seleccionados
             factura = self._facturas.CrearFactura(cliente, seleccion, date.today())
             print("Factura creada:", factura)
+
         except Exception as e:
             print("Error al crear factura:", e)
 
     def _op_buscar_por_cedula(self):
+    
         cedula = input("Cédula: ").strip()
         cliente = self._clientes.BuscarPorCedula(int(cedula))
+
         if cliente is None:
             print("Cliente no encontrado.")
             return
+
         print(f"\nCliente: {cliente.nombre} ({cliente.cedula})")
         self._clientes.MostrarFacturasPorCedula(cliente.cedula)
 
     def _op_listar_productos(self):
+  
         prods = self._productos.ListarProductos()
         if not prods:
             print("No hay productos.")
             return
+
         print("\nProductos registrados:")
         for p in prods:
             print(" -", p)
 
     def _op_listar_clientes(self):
+    
         cl = self._clientes.ListarClientes()
         if not cl:
             print("No hay clientes.")
             return
+
         print("\nClientes registrados:")
         for c in cl:
             print(" -", c)
