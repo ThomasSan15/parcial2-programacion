@@ -20,12 +20,12 @@ class TestCliente(unittest.TestCase):
         self.fertilizante = Fertilizante("AgroVida", 40000, "ICA-F-2024", "Cada 30 días", date(2025, 10, 25))
         self.control_plaga = ControlPlaga("Cyperkill", 32000, "ICA-C-8899", "Cada 15 días", "10 días")
 
-        self.factura1.agregarProducto(self.antibiotico)
-        self.factura1.agregarProducto(self.fertilizante)
-        self.factura2.agregarProducto(self.control_plaga)
+        self.factura1.AgregarProducto(self.antibiotico)
+        self.factura1.AgregarProducto(self.fertilizante)
+        self.factura2.AgregarProducto(self.control_plaga)
 
-        self.cliente.agregarFactura(self.factura1)
-        self.cliente.agregarFactura(self.factura2)
+        self.cliente.AgregarFactura(self.factura1)
+        self.cliente.AgregarFactura(self.factura2)
 
     def test_cliente_datos_basicos(self):
         self.assertEqual(self.cliente.nombre, "Carlos Ramírez")
@@ -37,8 +37,8 @@ class TestCliente(unittest.TestCase):
         self.assertIn(self.factura2, self.cliente.pedidos)
 
     def test_historial_cliente(self):
-        total1 = self.factura1.calcular_total()
-        total2 = self.factura2.calcular_total()
+        total1 = self.factura1.CalcularTotal()
+        total2 = self.factura2.CalcularTotal()
         self.assertEqual(total1, 88000)
         self.assertEqual(total2, 32000)
         self.assertEqual(len(self.factura1.productos), 2)
