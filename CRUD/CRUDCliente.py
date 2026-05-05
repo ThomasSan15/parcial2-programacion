@@ -2,13 +2,16 @@ from modelo.Cliente import Cliente
 
 class CRUDCliente:
     def __init__(self):
+        # Lista interna de clientes registrados
         self._clientes = []
 
     @property
     def clientes(self):
+        # Retorna una copia para evitar modificaciones externas
         return self._clientes[:]
 
     def CrearCliente(self, nombre: str, cedula: int):
+
         cliente = Cliente(nombre, cedula)
         self._clientes.append(cliente)
         return cliente
@@ -20,10 +23,12 @@ class CRUDCliente:
         return None
 
     def ListarClientes(self):
+        # Retorna una lista de clientes en formato string
         return [str(clientes) for clientes in self._clientes]
 
     def MostrarFacturasPorCedula(self, cedula: int):
         cliente = self.BuscarPorCedula(cedula)
+
         if not cliente:
             print(f"No se encontró cliente con cédula {cedula}.")
             return
@@ -31,6 +36,7 @@ class CRUDCliente:
         print(f"\nCliente: {cliente.nombre} ({cliente.cedula})")
         print(f"Tiene {len(cliente.pedidos)} facturas asociadas.\n")
 
+    
         for facturas in cliente.pedidos:
             nombres = [p.nombre for p in facturas.productos]
             print(f"Factura del {facturas.fecha} -> Total: {facturas.total} | Productos: {nombres}")
