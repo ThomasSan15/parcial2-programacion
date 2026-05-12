@@ -1,6 +1,7 @@
 from modelo.Cliente import Cliente
 
-class CRUDCliente:
+
+class CrudCliente:
     def __init__(self):
         # Lista interna de clientes registrados
         self._clientes = []
@@ -10,24 +11,23 @@ class CRUDCliente:
         # Retorna una copia para evitar modificaciones externas
         return self._clientes[:]
 
-    def CrearCliente(self, nombre: str, cedula: int):
-
+    def crear_cliente(self, nombre: str, cedula: int):
         cliente = Cliente(nombre, cedula)
         self._clientes.append(cliente)
         return cliente
 
-    def BuscarPorCedula(self, cedula: int):
+    def buscar_por_cedula(self, cedula: int):
         for cliente in self._clientes:
             if cliente.cedula == cedula:
                 return cliente
         return None
 
-    def ListarClientes(self):
+    def listar_clientes(self):
         # Retorna una lista de clientes en formato string
-        return [str(clientes) for clientes in self._clientes]
+        return [str(cliente) for cliente in self._clientes]
 
-    def MostrarFacturasPorCedula(self, cedula: int):
-        cliente = self.BuscarPorCedula(cedula)
+    def mostrar_facturas_por_cedula(self, cedula: int):
+        cliente = self.buscar_por_cedula(cedula)
 
         if not cliente:
             print(f"No se encontró cliente con cédula {cedula}.")
@@ -36,7 +36,9 @@ class CRUDCliente:
         print(f"\nCliente: {cliente.nombre} ({cliente.cedula})")
         print(f"Tiene {len(cliente.pedidos)} facturas asociadas.\n")
 
-    
-        for facturas in cliente.pedidos:
-            nombres = [p.nombre for p in facturas.productos]
-            print(f"Factura del {facturas.fecha} -> Total: {facturas.total} | Productos: {nombres}")
+        for factura in cliente.pedidos:
+            nombres = [p.nombre for p in factura.productos]
+            print(
+                f"Factura del {factura.fecha} -> "
+                f"Total: {factura.total} | Productos: {nombres}"
+            )
